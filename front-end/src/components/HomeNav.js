@@ -16,6 +16,10 @@ const Nav = () => {
 	const logOut = () => {
 		localStorage.removeItem("_id");
 		navigate("/");
+		if (nc !== undefined) {
+			nc.close();
+		}
+		setConnection(undefined);
 	};
 
 	const posts = () => {
@@ -23,11 +27,10 @@ const Nav = () => {
 	}
 
 	const [nc, setConnection] = useState(undefined);
-	const [lastError, setLastError] = useState("");
 
 	const addMessage = (err, msg) => {
 		const newMessage = StringCodec().decode(msg.data);
-		enqueueSnackbar(newMessage, { variant: "info", autoHideDuration: 10000 });
+		enqueueSnackbar(newMessage, { variant: "info", autoHideDuration: 5000 });
 		console.info("Received a message: " + newMessage);
 	};
 
@@ -37,9 +40,8 @@ const Nav = () => {
 			try {
 				const response = await fetch("http://localhost:4000/api/users/" + id);
 				const data = await response.json();
-				const subjects = data.user.subscribtions;
-				console.log(subjects);
-				if (nc == undefined) {
+				const subjects = data.subscribtions;
+				if (nc === undefined) {
 					connect({ servers: "ws://localhost:9090" })
 						.then((nc) => {
 							setConnection(nc);
@@ -48,7 +50,7 @@ const Nav = () => {
 							});
 						})
 						.catch((err) => {
-							setLastError(err.message);
+							console.log(err.message);
 						});
 				}
 			} catch (error) {
@@ -56,28 +58,6 @@ const Nav = () => {
 			}
 		};
 		fetchData();
-		// const id = localStorage.getItem("_id");
-
-		// if (nc == undefined) {
-		// 	connect({ servers: "ws://localhost:9090" })
-		// 		.then((nc) => {
-		// 			setConnection(nc);
-		// 			fetch("http://localhost:4000/api/users/" + id)
-		// 				.then((res) => {
-		// 					if (res.status === 200) {
-		// 						return res.json();
-		// 					}
-		// 					throw new Error("Something went wrong", res.json());
-		// 				})
-		// 				.then((data) => {
-		// 					console.log(data.user.subscriptions);
-		// 				})
-		// 				.catch((err) => console.error(err));
-		// 		})
-		// 		.catch((err) => {
-		// 			setLastError(err.message);
-		// 		});
-		// }
 	}, [navigate]);
 
 	return (

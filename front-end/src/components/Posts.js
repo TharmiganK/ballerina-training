@@ -8,6 +8,7 @@ const Posts = () => {
     const [description, setDescription] = useState("");
     const [notify, setNotify] = useState(false);
     const [message, setMessage] = useState("");
+    const [error, setError] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,14 +33,20 @@ const Posts = () => {
             },
         })
             .then((res) => {
-                if (res.status === 201) {
+                if (res.status === 201 | res.status === 403) {
                     return res.json();
                 }
                 throw new Error("Something went wrong", res.json());
             })
             .then((data) => {
-                setNotify(true);
-                setMessage(data.message);
+                if (data.error_message) {
+                    setNotify(true);
+                    setMessage(data.error_message);
+                    setError(true)
+                } else {
+                    setNotify(true);
+                    setMessage(data.message);
+                }
             })
             .catch((err) => console.error(err));
     };
@@ -52,7 +59,10 @@ const Posts = () => {
     const handleNotification = () => {
         setNotify(false);
         setMessage("");
-        navigate("/dashboard");
+        if (!error) {
+            navigate("/dashboard");
+        }
+        setError(false);
     }
     return (
         <div>

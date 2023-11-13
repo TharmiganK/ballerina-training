@@ -4,7 +4,7 @@ import React from "react";
 const Notification = ({ message, error, handle }) => {
     return (
         <div>
-            <Snackbar open autoHideDuration={10000} onClose={handle}>
+            <Snackbar open autoHideDuration={5000} onClose={handle}>
                 <Alert severity={error ? "error" : "success"} onClose={handle}>
                     {message}
                 </Alert>
