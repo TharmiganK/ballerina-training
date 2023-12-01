@@ -46,7 +46,7 @@ Following is the entity relationship diagram:
 
 ## Task 4 - Make the sentiment analysis client resilient
 
-The sentiment analysis service is not reliable. It can be down at times. We need to make the client resilient to handle such failures.
+The sentiment analysis service is not reliable. It goes down frequently and return `503 - Service Unavailable`. We need to make the client resilient to handle such failures.
 
 The Ballerina HTTP client supports the following resiliency features:
 
