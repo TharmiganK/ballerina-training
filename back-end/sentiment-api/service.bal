@@ -1,7 +1,14 @@
 import ballerina/http;
 import ballerina/log;
 
-listener http:Listener sentiment_ls = new (9000);
+listener http:Listener sentiment_ls = new (9000,
+    secureSocket = {
+        'key: {
+            certFile: "resources/server_public.crt",
+            keyFile: "resources/server_private.key"
+        }
+    }
+);
 
 service /text\-processing on sentiment_ls {
 
@@ -12,11 +19,11 @@ service /text\-processing on sentiment_ls {
     resource function post api/sentiment(Post post) returns Sentiment {
         // Return a dummy response
         return {
-            probability: { 
-                neg: 0.30135019761690551, 
-                neutral: 0.27119050546800266, 
+            probability: {
+                neg: 0.30135019761690551,
+                neutral: 0.27119050546800266,
                 pos: 0.69864980238309449
-            }, 
+            },
             label: POSITIVE
         };
     }

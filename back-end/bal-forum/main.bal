@@ -58,14 +58,27 @@ service /api on new http:Listener(port) {
         };
     }
 
-    resource function post users/[string id]/posts(NewForumPost newPost) returns PostCreated|UserNotFound|error {
+    resource function post users/[string id]/posts(NewForumPost newPost) returns PostCreated|UserNotFound|PostRejected|error {
         User|error user = forumDbClient->queryRow(`
             SELECT id, name, email FROM users WHERE id = ${id}
         `);
         if user is error {
-            return {
+            return <UserNotFound> {
                 body: {
                     error_message: "User not found"
+                }
+            };
+        }
+
+        Text text = {
+            text: newPost.title + " " + newPost.description
+        };
+
+        Sentiment sentiment = check sentimentAPI->/api/sentiment.post(text);
+        if sentiment.label != "pos" {
+            return <PostRejected> {
+                body: {
+                    error_message: "Post rejected due to negative sentiment"
                 }
             };
         }
@@ -85,22 +98,20 @@ service /api on new http:Listener(port) {
     resource function post posts/[string id]/like(PostLike like) returns PostLiked|PostNotFound|AlreadyLiked|error {
         ForumPostInDB|error forumPost = check forumDbClient->queryRow(`SELECT * FROM posts WHERE id = ${id}`);
         if forumPost is error {
-            PostNotFound postNotFound = {
+            return <PostNotFound> {
                 body: {
                     error_message: "Post not found"
                 }
             };
-            return postNotFound;
         }
 
         string[] likes = check forumPost.likes.fromJsonStringWithType();
         if likes.indexOf(like.userId) != () {
-            AlreadyLiked alreadyLiked = {
+            return <AlreadyLiked> {
                 body: {
                     error_message: "Already liked"
                 }
             };
-            return alreadyLiked;
         }
 
         likes.push(like.userId);
@@ -116,12 +127,11 @@ service /api on new http:Listener(port) {
     resource function post posts/[string id]/comments(NewPostComment newComment) returns CommentCreated|PostNotFound|error {
         ForumPostInDB|error forumPost = check forumDbClient->queryRow(`SELECT * FROM posts WHERE id = ${id}`);
         if forumPost is error {
-            PostNotFound postNotFound = {
+            return {
                 body: {
                     error_message: "Post not found"
                 }
             };
-            return postNotFound;
         }
 
         PostComment comment = check getPostComment(id, newComment);
@@ -139,12 +149,11 @@ service /api on new http:Listener(port) {
     resource function get posts/[string id]() returns ForumPost|PostNotFound|error {
         ForumPostInDB|error forumPost = check forumDbClient->queryRow(`SELECT * FROM posts WHERE id = ${id}`);
         if forumPost is error {
-            PostNotFound postNotFound = {
+            return {
                 body: {
                     error_message: "Post not found"
                 }
             };
-            return postNotFound;
         }
 
         return getForumPost(forumPost);
