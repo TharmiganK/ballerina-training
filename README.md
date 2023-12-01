@@ -26,7 +26,7 @@ Cover basic concepts related to integration. Following sessions will cover diffe
 
 The scenario is based on a simple API written for a forum site, which has users, associated posts and comments. Following depicts the high level component diagram:
 
-![Component Diagram](resources/bal-forum.png)
+![Component Diagram](images/bal-forum.png)
 
 The forum REST service exposes the following resources:
 
@@ -42,7 +42,7 @@ The forum REST service exposes the following resources:
 
 Following is the entity relationship diagram:
 
-![Entity Relationship Diagram](resources/bal-forum-erd.png)
+![Entity Relationship Diagram](images/bal-forum-erd.png)
 
 ## Task 1 - Implement registration and login resources
 
