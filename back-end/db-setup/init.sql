@@ -11,7 +11,7 @@ CREATE TABLE forum_database.posts (
     description LONGTEXT,
     user_id VARCHAR(255),
     likes VARCHAR(255),
-    postedAt TIMESTAMP
+    posted_at TIMESTAMP
 );
 
 CREATE TABLE forum_database.comments (
