@@ -34,7 +34,6 @@ The forum REST service exposes the following resources:
 | -------- | ----------- |
 | `POST api/users` | Create a new user |
 | `POST api/login` | Login as with user credentials |
-| `GET api/users/{id}` | Return the user details specified by the id |
 | `POST api/users/{id}/posts` | Create a new forum post |
 | `GET api/posts` | Get all the forum posts |
 | `GET api/posts/{id}` | Get the forum post specified by the id |
@@ -45,11 +44,11 @@ Following is the entity relationship diagram:
 
 ![Entity Relationship Diagram](resources/bal-forum-erd.png)
 
-## Task 1 - Implement registration and login resources
+## Task 2 - Implement forum post related resources
 
-### Registration resource
+### Post creation resource
 
-- Path: `api/users`
+- Path: `api/users/{id}/posts`
   
 - Method: `POST`
   
@@ -57,9 +56,9 @@ Following is the entity relationship diagram:
   
   ```json
   {
-    "name": "david",
-    "email": "david@gmail.com",
-    "password": "*******"
+    "title": "This is a sample title",
+    "description": "This is a sample description",
+    "timestamp": "2023-12-03T10:15:30.00Z"
   }
   ```
 
@@ -67,7 +66,129 @@ Following is the entity relationship diagram:
 
   ```json
   {
-    "message": "User created successfully"
+    "message": "Post created successfully"
+  }
+  ```
+
+- Failure response - `404 NOT FOUND`:
+
+  ```json
+  {
+    "error_message": "User not found"
+  }
+  ```
+
+### Posts retrieval resource
+
+- Path: `api/posts`
+
+- Method: `GET`
+
+- Success Response - `200 OK`:
+
+  ```json
+  [
+    {
+      "title": "This is a sample title",
+      "description": "This is a sample description",
+      "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "likes": [
+        "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      ],
+      "comments": [
+        {
+          "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+          "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+          "comment": "This is a sample comment",
+          "postedAt": {
+            "year": 2023,
+            "month": 12,
+            "day": 3,
+            "hour": 10,
+            "minute": 15
+          }
+        }
+      ],
+      "postedAt": {
+        "year": 2023,
+        "month": 12,
+        "day": 3,
+        "hour": 8,
+        "minute": 10
+      }
+    }
+  ]
+  ```
+
+### Specific post retrieval resource
+
+- Path: `api/posts/{id}`
+
+- Method: `GET`
+
+- Success Response - `200 OK`:
+
+  ```json
+  {
+    "title": "This is a sample title",
+    "description": "This is a sample description",
+    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "likes": [
+      "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    ],
+    "comments": [
+      {
+        "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "comment": "This is a sample comment",
+        "postedAt": {
+          "year": 2023,
+          "month": 12,
+          "day": 3,
+          "hour": 10,
+          "minute": 15
+        }
+      }
+    ],
+    "postedAt": {
+      "year": 2023,
+      "month": 12,
+      "day": 3,
+      "hour": 8,
+      "minute": 10
+    }
+  }
+  ```
+
+### Post like resource
+
+- Path: `api/posts/{id}/like`
+
+- Method: `POST`
+
+- Request body:
+
+  ```json
+  {
+    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a"
+  }
+  ```
+
+- Success response - `200 OK`:
+
+  ```json
+  {
+    "message": "Post liked successfully"
+  }
+  ```
+
+- Failure response - `404 NOT FOUND`:
+
+  ```json
+  {
+    "error_message": "Post not found"
   }
   ```
 
@@ -75,38 +196,44 @@ Following is the entity relationship diagram:
 
   ```json
   {
-    "error_message": "User already exists"
+    "error_message": "User already liked the post"
   }
   ```
 
-### Login resource
+### Post comment resource
 
-- Path: `api/login`
+- Path: `api/posts/{id}/comments`
 
 - Method: `POST`
 
 - Request body:
 
-   ```json
-   {
-     "name": "string",
-     "password": "string"
-   }
-   ```
+  ```json
+  {
+    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "comment": "This is a sample comment",
+    "postedAt": {
+      "year": 2023,
+      "month": 12,
+      "day": 3,
+      "hour": 10,
+      "minute": 15
+    }
+  }
+  ```
 
-- Success Response - `200 OK`:
+- Success response - `200 OK`:
 
-   ```json
-   {
-     "message": "Login successful",
-     "id": "01ee82c7-1526-1530-b3d7-89902934ab7a"
-   }
-   ```
+  ```json
+  {
+    "message": "Comment added successfully"
+  }
+  ```
 
-- Failure Response - `401 UNAUTHORIZED`:
+- Failure response - `404 NOT FOUND`:
 
-   ```json
-   {
-     "error_message": "Invalid credentials"
-   }
-   ```
+  ```json
+  {
+    "error_message": "Post not found"
+  }
+  ```
