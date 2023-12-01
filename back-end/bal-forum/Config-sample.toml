@@ -4,3 +4,10 @@ user = "DATABASE_USER"
 password = "DATABASE_PASSWORD"
 host = "HOST"
 port = 3306
+
+[sentimentEPConfig]
+url = "SENTIMENT_ENDPOINT_URL"
+refreshUrl = "OAUTH2_REFRESH_URL"
+clientId = "OAUTH2_CLIENT_ID"
+clientSecret = "OAUTH2_CLIENT_SECRET"
+refreshToken = "OAUTH2_REFRESH_TOKEN"
