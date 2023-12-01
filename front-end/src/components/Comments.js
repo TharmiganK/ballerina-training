@@ -19,9 +19,9 @@ const Comments = () => {
 		fetch("http://localhost:4000/api/posts/" + id + "/comments", {
 			method: "POST",
 			body: JSON.stringify({
-				username: localStorage.getItem("username"),
+				userId: localStorage.getItem("_id"),
 				comment,
-				"timestamp": new Date().toISOString(),
+				timestamp: new Date().toISOString(),
 			}),
 			headers: {
 				"Content-Type": "application/json",
