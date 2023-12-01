@@ -42,5 +42,10 @@ final http:Client sentimentAPI = check new (sentimentEPConfig.url,
                 cert: "resources/sts_server_public.crt"
             }
         }
+    },
+    retryConfig = {
+        interval: 1,
+        count: 3,
+        statusCodes: [503]
     }
 );
