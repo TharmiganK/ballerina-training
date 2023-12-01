@@ -121,3 +121,5 @@ Connect to the mock STS endpoint is available through docker compose. The endpoi
 | Client ID | `FlfJYKBD2c925h4lkycqNZlC2l4a` |
 | Client Secret | `PJz0UhTJMrHOo68QQNpvnqAY_3Aa` |
 | Refresh Token | `24f19603-8565-4b5f-a036-88a945e1f272` |
+
+> **Note:** The mock STS endpoint is secured with SSL and the self-signed public certificate of the STS service is given in the `resources` directory.
