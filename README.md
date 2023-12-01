@@ -94,7 +94,7 @@ Following is the entity relationship diagram:
       "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
       "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
       "likes": [
-        "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "01ee82c7-1526-1530-b3d7-89902934ab7a"
       ],
       "comments": [
         {
@@ -136,7 +136,7 @@ Following is the entity relationship diagram:
     "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
     "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
     "likes": [
-      "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "01ee82c7-1526-1530-b3d7-89902934ab7a"
     ],
     "comments": [
       {
