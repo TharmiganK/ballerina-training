@@ -1,0 +1,6 @@
+[dbConfig]
+database = "DATABASE_NAME"
+user = "DATABASE_USER"
+password = "DATABASE_PASSWORD"
+host = "HOST"
+port = 3306
