@@ -98,7 +98,8 @@ Following is the entity relationship diagram:
 
    ```json
    {
-     "message": "Login successful"
+     "message": "Login successful",
+     "id": "01ee82c7-1526-1530-b3d7-89902934ab7a"
    }
    ```
 
