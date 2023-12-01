@@ -78,90 +78,6 @@ Following is the entity relationship diagram:
   }
   ```
 
-### Posts retrieval resource
-
-- Path: `api/posts`
-
-- Method: `GET`
-
-- Success Response - `200 OK`:
-
-  ```json
-  [
-    {
-      "title": "This is a sample title",
-      "description": "This is a sample description",
-      "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-      "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-      "likes": [
-        "01ee82c7-1526-1530-b3d7-89902934ab7a"
-      ],
-      "comments": [
-        {
-          "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-          "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-          "comment": "This is a sample comment",
-          "postedAt": {
-            "year": 2023,
-            "month": 12,
-            "day": 3,
-            "hour": 10,
-            "minute": 15
-          }
-        }
-      ],
-      "postedAt": {
-        "year": 2023,
-        "month": 12,
-        "day": 3,
-        "hour": 8,
-        "minute": 10
-      }
-    }
-  ]
-  ```
-
-### Specific post retrieval resource
-
-- Path: `api/posts/{id}`
-
-- Method: `GET`
-
-- Success Response - `200 OK`:
-
-  ```json
-  {
-    "title": "This is a sample title",
-    "description": "This is a sample description",
-    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-    "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-    "likes": [
-      "01ee82c7-1526-1530-b3d7-89902934ab7a"
-    ],
-    "comments": [
-      {
-        "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-        "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-        "comment": "This is a sample comment",
-        "postedAt": {
-          "year": 2023,
-          "month": 12,
-          "day": 3,
-          "hour": 10,
-          "minute": 15
-        }
-      }
-    ],
-    "postedAt": {
-      "year": 2023,
-      "month": 12,
-      "day": 3,
-      "hour": 8,
-      "minute": 10
-    }
-  }
-  ```
-
 ### Post like resource
 
 - Path: `api/posts/{id}/like`
@@ -212,13 +128,7 @@ Following is the entity relationship diagram:
   {
     "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
     "comment": "This is a sample comment",
-    "postedAt": {
-      "year": 2023,
-      "month": 12,
-      "day": 3,
-      "hour": 10,
-      "minute": 15
-    }
+    "postedAt": "2023-12-03T10:15:30.00Z"
   }
   ```
 
@@ -236,4 +146,96 @@ Following is the entity relationship diagram:
   {
     "error_message": "Post not found"
   }
+  ```
+
+### Specific post retrieval resource
+
+- Path: `api/posts/{id}`
+
+- Method: `GET`
+
+- Success Response - `200 OK`:
+
+  ```json
+  {
+    "title": "This is a sample title",
+    "description": "This is a sample description",
+    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "likes": [
+      "01ee82c7-1526-1530-b3d7-89902934ab7a"
+    ],
+    "comments": [
+      {
+        "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "comment": "This is a sample comment",
+        "postedAt": {
+          "year": 2023,
+          "month": 12,
+          "day": 3,
+          "hour": 10,
+          "minute": 15
+        }
+      }
+    ],
+    "postedAt": {
+      "year": 2023,
+      "month": 12,
+      "day": 3,
+      "hour": 8,
+      "minute": 10
+    }
+  }
+  ```
+
+- Failure response - `404 NOT FOUND`:
+
+  ```json
+  {
+    "error_message": "Post not found"
+  }
+  ```
+
+### Posts retrieval resource
+
+- Path: `api/posts`
+
+- Method: `GET`
+
+- Success Response - `200 OK`:
+
+  ```json
+  [
+    {
+      "title": "This is a sample title",
+      "description": "This is a sample description",
+      "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "likes": [
+        "01ee82c7-1526-1530-b3d7-89902934ab7a"
+      ],
+      "comments": [
+        {
+          "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+          "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+          "comment": "This is a sample comment",
+          "postedAt": {
+            "year": 2023,
+            "month": 12,
+            "day": 3,
+            "hour": 10,
+            "minute": 15
+          }
+        }
+      ],
+      "postedAt": {
+        "year": 2023,
+        "month": 12,
+        "day": 3,
+        "hour": 8,
+        "minute": 10
+      }
+    }
+  ]
   ```
