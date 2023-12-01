@@ -44,43 +44,13 @@ Following is the entity relationship diagram:
 
 ![Entity Relationship Diagram](images/bal-forum-erd.png)
 
-## Task 2 - Implement forum post related resources
+## Task 3 - Verify the post content with the sentiment analysis service
 
-### Post creation resource
+The mock sentiment analysis service written in Ballerina is available in the `backend/sentiment-api` directory. The service exposes a single resource, which accepts a string and returns a sentiment score.
 
-- Path: `api/users/{id}/posts`
-  
-- Method: `POST`
-  
-- Request body:
-  
-  ```json
-  {
-    "title": "This is a sample title",
-    "description": "This is a sample description",
-    "timestamp": "2023-12-03T10:15:30.00Z"
-  }
-  ```
+- Port: `9000`
 
-- Success response - `201 CREATED`:
-
-  ```json
-  {
-    "message": "Post created successfully"
-  }
-  ```
-
-- Failure response - `404 NOT FOUND`:
-
-  ```json
-  {
-    "error_message": "User not found"
-  }
-  ```
-
-### Post like resource
-
-- Path: `api/posts/{id}/like`
+- Path: `/text-processing/api/sentiment`
 
 - Method: `POST`
 
@@ -88,7 +58,7 @@ Following is the entity relationship diagram:
 
   ```json
   {
-    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a"
+    "text": "This is a sample text"
   }
   ```
 
@@ -96,146 +66,34 @@ Following is the entity relationship diagram:
 
   ```json
   {
-    "message": "Post liked successfully"
+    "probability": { 
+      "neg": 0.30135019761690551, 
+      "neutral": 0.27119050546800266, 
+      "pos": 0.69864980238309449
+    }, 
+    "label": "pos"
   }
   ```
 
-- Failure response - `404 NOT FOUND`:
+The label can be one of the following values:
+
+- `pos` - Positive sentiment
+- `neg` - Negative sentiment
+- `neutral` - Neutral sentiment
+
+Pass the post description to the sentiment analysis service and verify the sentiment score. If the label is `pos`, then the post is valid. Otherwise, the post is forbidden.
+
+- Rejected response - `403 FORBIDDEN`:
 
   ```json
   {
-    "error_message": "Post not found"
+    "error_message": "Post contains negative sentiment"
   }
   ```
 
-- Failure response - `409 CONFLICT`:
+### Subtasks
 
-  ```json
-  {
-    "error_message": "User already liked the post"
-  }
-  ```
-
-### Post comment resource
-
-- Path: `api/posts/{id}/comments`
-
-- Method: `POST`
-
-- Request body:
-
-  ```json
-  {
-    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-    "comment": "This is a sample comment",
-    "postedAt": "2023-12-03T10:15:30.00Z"
-  }
-  ```
-
-- Success response - `200 OK`:
-
-  ```json
-  {
-    "message": "Comment added successfully"
-  }
-  ```
-
-- Failure response - `404 NOT FOUND`:
-
-  ```json
-  {
-    "error_message": "Post not found"
-  }
-  ```
-
-### Specific post retrieval resource
-
-- Path: `api/posts/{id}`
-
-- Method: `GET`
-
-- Success Response - `200 OK`:
-
-  ```json
-  {
-    "title": "This is a sample title",
-    "description": "This is a sample description",
-    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-    "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-    "likes": [
-      "01ee82c7-1526-1530-b3d7-89902934ab7a"
-    ],
-    "comments": [
-      {
-        "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-        "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-        "comment": "This is a sample comment",
-        "postedAt": {
-          "year": 2023,
-          "month": 12,
-          "day": 3,
-          "hour": 10,
-          "minute": 15
-        }
-      }
-    ],
-    "postedAt": {
-      "year": 2023,
-      "month": 12,
-      "day": 3,
-      "hour": 8,
-      "minute": 10
-    }
-  }
-  ```
-
-- Failure response - `404 NOT FOUND`:
-
-  ```json
-  {
-    "error_message": "Post not found"
-  }
-  ```
-
-### Posts retrieval resource
-
-- Path: `api/posts`
-
-- Method: `GET`
-
-- Success Response - `200 OK`:
-
-  ```json
-  [
-    {
-      "title": "This is a sample title",
-      "description": "This is a sample description",
-      "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-      "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-      "likes": [
-        "01ee82c7-1526-1530-b3d7-89902934ab7a"
-      ],
-      "comments": [
-        {
-          "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-          "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-          "comment": "This is a sample comment",
-          "postedAt": {
-            "year": 2023,
-            "month": 12,
-            "day": 3,
-            "hour": 10,
-            "minute": 15
-          }
-        }
-      ],
-      "postedAt": {
-        "year": 2023,
-        "month": 12,
-        "day": 3,
-        "hour": 8,
-        "minute": 10
-      }
-    }
-  ]
-  ```
+- **Task 3.1** - Connect to the sentiment analysis service without SSL
+- **Task 3.2** - Secure the sentiment analysis service with SSL and connect to it
+- **Task 3.3** - Secure the sentiment analysis service with mutual SSL and connect to it
+- **Task 3.4** - Secure the sentiment analysis service with OAuth2 and connect to it
