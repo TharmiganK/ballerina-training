@@ -40,9 +40,9 @@ const Posts = () => {
             })
             .then((data) => {
                 if (data.error_message) {
+                    setError(true);
                     setNotify(true);
                     setMessage(data.error_message);
-                    setError(true)
                 } else {
                     setNotify(true);
                     setMessage(data.message);
@@ -67,7 +67,7 @@ const Posts = () => {
     return (
         <div>
             <Nav logoPath="images/bal.svg" />
-            {notify && <Notification message={message} handle={handleNotification} />}
+            {notify && <Notification message={message} handle={handleNotification} error={error}/>}
             <div className='home'>
                 <h2 className='homeTitle'>Create a Post</h2>
                 <form className='homeForm' onSubmit={handleSubmit}>
