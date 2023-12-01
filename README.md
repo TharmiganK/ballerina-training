@@ -9,8 +9,8 @@ Cover basic concepts related to integration. Following sessions will cover diffe
 - Installing and Managing distributions
 - Writing a simple RESTful service
 - Accessing database
-- Code to Cloud
 - Data transformation with data mapper
+- Code to Cloud
 - HTTP client
 - Resiliency
 - Service/Client security with SSL/MTLS
