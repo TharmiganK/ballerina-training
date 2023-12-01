@@ -82,6 +82,11 @@ type UserConflict record {|
     ErrorResponse body;
 |};
 
+type PostRejected record {|
+    *http:Forbidden;
+    ErrorResponse body;
+|};
+
 type NewForumPost record {
     string title;
     string description;
@@ -129,3 +134,11 @@ type ForumPostInDB record {
 type PostLike record {|
     string userId;
 |};
+
+type Text record {|
+    string text;
+|};
+
+type Sentiment record {
+    string label;
+};

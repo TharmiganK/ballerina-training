@@ -4,3 +4,6 @@ user = "DATABASE_USER"
 password = "DATABASE_PASSWORD"
 host = "HOST"
 port = 3306
+
+[sentimentEPConfig]
+url = "SENTIMENT_ENDPOINT_URL"

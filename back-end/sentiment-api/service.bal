@@ -1,7 +1,17 @@
 import ballerina/http;
 import ballerina/log;
 
-listener http:Listener sentiment_ls = new (9000);
+listener http:Listener sentiment_ls = new (9000,
+    secureSocket = {
+        'key: {
+            certFile: "resources/server_public.crt",
+            keyFile: "resources/server_private.key"
+        },
+        mutualSsl: {
+            cert: "resources/client_public.crt"
+        }
+    }
+);
 
 service /text\-processing on sentiment_ls {
 
