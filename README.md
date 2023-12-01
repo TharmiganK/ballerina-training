@@ -91,9 +91,33 @@ Pass the post description to the sentiment analysis service and verify the senti
   }
   ```
 
-### Subtasks
+### Task 3.1 - Connect to the sentiment analysis service without SSL
 
-- **Task 3.1** - Connect to the sentiment analysis service without SSL
-- **Task 3.2** - Secure the sentiment analysis service with SSL and connect to it
-- **Task 3.3** - Secure the sentiment analysis service with mutual SSL and connect to it
-- **Task 3.4** - Secure the sentiment analysis service with OAuth2 and connect to it
+The sentiment analysis service is not secured with SSL. Therefore, you can connect to it without SSL. Use an [HTTP client](https://ballerina.io/learn/by-example/http-client-send-request-receive-response/) to connect to the sentiment analysis service.
+
+### Task 3.2 - Secure the sentiment analysis service with SSL and connect to it
+
+[Secure the sentiment analysis service with SSL](https://ballerina.io/learn/by-example/http-service-ssl-tls/) and connect to it. Use an [HTTP client secured with SSL](https://ballerina.io/learn/by-example/http-client-ssl-tls/) to connect to the sentiment analysis service.
+
+> **Note:** For testing purpose you can use the self-signed certificates provided in the `resources` directory of each service.
+
+### Task 3.3 - Secure the sentiment analysis service with mutual SSL and connect to it
+
+[Secure the sentiment analysis service with mutual SSL](https://ballerina.io/learn/by-example/http-service-mutual-ssl/) and connect to it. Use an [HTTP client secured with mutual SSL](https://ballerina.io/learn/by-example/http-client-mutual-ssl/) to connect to the sentiment analysis service.
+
+> **Note:** For testing purpose you can use the self-signed certificates provided in the `resources` directory of each service.
+
+### Task 3.4 - Secure the sentiment analysis service with OAuth2 and connect to it
+
+[Secure the sentiment analysis service with OAuth2](https://ballerina.io/learn/by-example/http-service-oauth2/) and connect to it. Use an [HTTP client secured with OAuth2 refresh token grant type](https://ballerina.io/learn/by-example/http-client-oauth2-refresh-token-grant-type/) to connect to the sentiment analysis service.
+
+Connect to the mock STS endpoint is available through docker compose. The endpoint deatils are as follows:
+
+| Property | Value |
+| -------- | ----- |
+| Introspection Endpoint | `https://localhost:9445/oauth2/introspect` |
+| Authorization header for introspection (admin:admin) | `"Authorization": "Basic YWRtaW46YWRtaW4="` |
+| Refresh Endpoint | `https://localhost:9445/oauth2/token` |
+| Client ID | `FlfJYKBD2c925h4lkycqNZlC2l4a` |
+| Client Secret | `PJz0UhTJMrHOo68QQNpvnqAY_3Aa` |
+| Refresh Token | `24f19603-8565-4b5f-a036-88a945e1f272` |
