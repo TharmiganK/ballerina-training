@@ -34,7 +34,6 @@ The forum REST service exposes the following resources:
 | -------- | ----------- |
 | `POST api/users` | Create a new user |
 | `POST api/login` | Login as with user credentials |
-| `GET api/users/{id}` | Return the user details specified by the id |
 | `POST api/users/{id}/posts` | Create a new forum post |
 | `GET api/posts` | Get all the forum posts |
 | `GET api/posts/{id}` | Get the forum post specified by the id |
