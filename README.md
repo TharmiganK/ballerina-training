@@ -154,6 +154,8 @@ Following is the entity relationship diagram:
   }
   ```
 
+> **Note:** The above new post request should be mapped to a `Post` record in the posts table.
+
 ### Task 2.2 - Post like resource
 
 - Path: `api/posts/{id}/likes`
@@ -272,6 +274,8 @@ Following is the entity relationship diagram:
     "error_message": "Post not found"
   }
   ```
+
+> **Note:** The response of this response should combine the post details and the comments from the respective tables.
 
 ### Task 2.5 - Posts retrieval resource
 

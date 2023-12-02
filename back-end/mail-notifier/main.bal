@@ -1,0 +1,50 @@
+import ballerina/log;
+import ballerinax/googleapis.gmail;
+import ballerinax/nats;
+
+type RegisterEvent record {
+    string name;
+    string email;
+};
+
+configurable gmail:OAuth2RefreshTokenGrantConfig gmailAuthConfig = ?;
+
+configurable string adminGmail = ?;
+
+final gmail:Client gmailClient = check new ({auth: gmailAuthConfig});
+
+const WELCOME_MAIL_SUBJECT = "Welcome to Ballerina Forum";
+
+function buildGreetingMessage(string recipientName) returns string =>
+string `Hi ${recipientName},  
+
+Welcome to Ballerina Forum. We are glad to have you on board.  
+
+Regards,  
+Ballerina Forum Team`;
+
+function sendGmailGreeting(RegisterEvent event) returns error? {
+    gmail:MessageRequest request = {
+        'from: adminGmail,
+        to: [event.email],
+        subject: WELCOME_MAIL_SUBJECT,
+        bodyInText: buildGreetingMessage(event.name)
+    };
+    do {
+        _ = check gmailClient->/users/me/messages/send.post(request);
+        log:printInfo("The email has been sent", recipient = event.email);
+    } on fail error err {
+        log:printError("Failed to send the email", receipient = event.email, 'error = err);
+    }
+}
+
+service "ballerina.forum" on new nats:Listener(nats:DEFAULT_URL) {
+    public function init() returns error? {
+        log:printInfo("Mail notifier service started");
+    }
+
+    remote function onMessage(RegisterEvent event) returns error? {
+        check sendGmailGreeting(event);
+    }
+}
+

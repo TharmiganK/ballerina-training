@@ -8,7 +8,7 @@ const Likes = ({ numberOfLikes, postId }) => {
 	const [message, setMessage] = React.useState("");
 	const [error, setError] = React.useState(false);
 	const handleLikeFunction = () => {
-		fetch("http://localhost:4000/api/posts/" + postId + "/like", {
+		fetch("http://localhost:4000/api/posts/" + postId + "/likes", {
 			method: "POST",
 			body: JSON.stringify({
 				userId: localStorage.getItem("_id"),
