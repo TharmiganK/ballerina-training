@@ -27,13 +27,18 @@ function createForumPost(string id, NewForumPost newPost) returns error? {
 }
 
 function getForumPost(ForumPostInDB forumPostInDB) returns ForumPost|error {
-    stream<PostComment, error?> commentStream = forumDBClient->query(`SELECT * FROM comments WHERE post_id = ${forumPostInDB.id} ORDER BY posted_at ASC`);
-    PostComment[] comments = check from PostComment comment in commentStream
-        select comment;
+    stream<PostCommentInDB, error?> commentStream = forumDBClient->query(`
+    SELECT comments.*, users.name 
+    FROM comments
+    INNER JOIN users ON comments.user_id = users.id 
+    WHERE post_id = ${forumPostInDB.id} ORDER BY posted_at ASC
+    `);
+    PostComment[] comments = check from PostCommentInDB comment in commentStream
+        select getPostComment(comment);
 
     ForumPost forumPost = {
         id: forumPostInDB.id,
-        userId: forumPostInDB.userId,
+        username: forumPostInDB.name ?: forumPostInDB.userId,
         title: forumPostInDB.title,
         description: forumPostInDB.description,
         likes: check forumPostInDB.likes.fromJsonStringWithType(),
@@ -44,8 +49,8 @@ function getForumPost(ForumPostInDB forumPostInDB) returns ForumPost|error {
     return forumPost;
 }
 
-function sendNatsMessage(string name, string email) {
-    RegisterEvent event = {name, email};
+function sendNatsMessage(string email) {
+    RegisterEvent event = {email};
     do {
         _ = check natsClient->publishMessage({subject: "ballerina.forum", content: event});
     } on fail error err {

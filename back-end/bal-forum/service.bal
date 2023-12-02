@@ -23,7 +23,7 @@ service /api on new http:Listener(4000) {
         string userId = uuid:createType1AsString();
         _ = check forumDBClient->execute(`INSERT INTO users VALUES (${userId}, ${newUser.name}, ${newUser.email}, ${newUser.password})`);
 
-        _ = start sendNatsMessage(newUser.name, newUser.email);
+        _ = start sendNatsMessage(newUser.email);
 
         return {
             body: {
@@ -62,11 +62,7 @@ service /api on new http:Listener(4000) {
             };
         }
 
-        Text text = {
-            text: newPost.title + " " + newPost.description
-        };
-
-        Sentiment sentiment = check sentimentAPI->/api/sentiment.post(text);
+        Sentiment sentiment = check sentimentAPI->/api/sentiment.post({text: newPost.title + " " + newPost.description});
         if sentiment.label != "pos" {
             return <PostRejected>{
                 body: {
@@ -158,7 +154,12 @@ service /api on new http:Listener(4000) {
     }
 
     resource function get posts/[string id]() returns ForumPost|PostNotFound|error {
-        ForumPostInDB|error forumPost = check forumDBClient->queryRow(`SELECT * FROM posts WHERE id = ${id}`);
+        ForumPostInDB|error forumPost = check forumDBClient->queryRow(`
+            SELECT posts.*, users.name 
+            FROM posts 
+            INNER JOIN users ON posts.user_id = users.id 
+            WHERE posts.id = ${id}
+        `);
         if forumPost is error {
             PostNotFound postNotFound = {
                 body: {
@@ -172,7 +173,11 @@ service /api on new http:Listener(4000) {
     }
 
     resource function get posts() returns ForumPost[]|error {
-        stream<ForumPostInDB, error?> forumPostStream = forumDBClient->query(`SELECT * FROM posts ORDER BY posted_at ASC`);
+        stream<ForumPostInDB, error?> forumPostStream = forumDBClient->query(`
+            SELECT posts.*, users.name 
+            FROM posts 
+            INNER JOIN users ON posts.user_id = users.id
+        `);
         ForumPost[] forumPosts = check from ForumPostInDB forumPost in forumPostStream
             select check getForumPost(forumPost);
 

@@ -17,3 +17,10 @@ function creatPostCommentInDB(string postId, NewPostComment newPostComment) retu
     userId: newPostComment.userId,
     postId: postId
 };
+
+function getPostComment(PostCommentInDB postCommentInDB) returns PostComment => {
+    id: postCommentInDB.id,
+    comment: postCommentInDB.comment,
+    postedAt: postCommentInDB.postedAt,
+    username: postCommentInDB.name ?: postCommentInDB.userId
+};

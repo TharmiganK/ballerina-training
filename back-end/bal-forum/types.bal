@@ -1,5 +1,5 @@
-import ballerina/time;
 import ballerina/sql;
+import ballerina/time;
 
 type UserRegistration record {
     string name;
@@ -41,12 +41,12 @@ type NewPostComment record {
     string postedAt;
 };
 
-type PostComment record {
+type PostComment record {|
     string id;
-    string userId;
+    string username;
     string comment;
     time:Civil postedAt;
-};
+|};
 
 type PostCommentInDB record {
     string id;
@@ -58,6 +58,7 @@ type PostCommentInDB record {
         name: "user_id"
     }
     string userId;
+    string name?;
     string comment;
     @sql:Column {
         name: "posted_at"
@@ -68,7 +69,7 @@ type PostCommentInDB record {
 type ForumPost record {
     string title;
     string description;
-    string userId;
+    string username;
     string id;
     string[] likes;
     PostComment[] comments;
@@ -82,6 +83,7 @@ type ForumPostInDB record {
         name: "user_id"
     }
     string userId;
+    string name?;
     string id;
     string likes;
     @sql:Column {
@@ -90,15 +92,10 @@ type ForumPostInDB record {
     time:Civil postedAt;
 };
 
-type Text record {|
-    string text;
-|};
-
 type Sentiment record {
     string label;
 };
 
-type RegisterEvent record {|
-    string name;
+type RegisterEvent record {
     string email;
-|};
+};

@@ -238,7 +238,7 @@ Following is the entity relationship diagram:
   {
     "title": "This is a sample title",
     "description": "This is a sample description",
-    "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+    "username": "John",
     "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
     "likes": [
       "01ee82c7-1526-1530-b3d7-89902934ab7a"
@@ -246,7 +246,7 @@ Following is the entity relationship diagram:
     "comments": [
       {
         "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-        "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+        "username": "David",
         "comment": "This is a sample comment",
         "postedAt": {
           "year": 2023,
@@ -275,7 +275,7 @@ Following is the entity relationship diagram:
   }
   ```
 
-> **Note:** The response of this response should combine the post details and the comments from the respective tables.
+> **Note:** The response should have the name of the user(in the post and comments) rather than the user id stored in the database.
 
 ### Task 2.5 - Posts retrieval resource
 
@@ -290,7 +290,7 @@ Following is the entity relationship diagram:
     {
       "title": "This is a sample title",
       "description": "This is a sample description",
-      "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+      "username": "John",
       "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
       "likes": [
         "01ee82c7-1526-1530-b3d7-89902934ab7a"
@@ -298,7 +298,7 @@ Following is the entity relationship diagram:
       "comments": [
         {
           "id": "01ee82c7-1526-1530-b3d7-89902934ab7a",
-          "userId": "01ee82c7-1526-1530-b3d7-89902934ab7a",
+          "username": "David",
           "comment": "This is a sample comment",
           "postedAt": {
             "year": 2023,
@@ -319,6 +319,8 @@ Following is the entity relationship diagram:
     }
   ]
   ```
+
+> **Note:** The response should have the name of the user(in the posts and comments) rather than the user id stored in the database.
 
 ## Task 3 - Verify the post content with the sentiment analysis service
 
@@ -412,3 +414,9 @@ The Ballerina HTTP client supports the following resiliency features:
 - [Failover](https://ballerina.io/learn/by-example/http-failover/)
 
 Make the sentiment analysis client resilient by retrying the request for 3 times with a delay of 1 second between each retry.
+
+## Task 5 - Deploy and test the services using Docker
+
+Build the docker images for the `bal-forum` and the `sentiment-api` services and run them using docker compose. The docker compose file is available in the `backend` directory.
+
+> **Tip:** Refer to the [Ballerina Code to Cloud guide](https://ballerina.io/learn/code-to-cloud-deployment/) for more information on deploying Ballerina services as docker images.
